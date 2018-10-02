@@ -23,23 +23,32 @@ class PreProcessor(implements(PreProcessorInterface)):
     def start(self, ws_pred=20, ws_future=7):
         size = len(self.__pre_data)
         for i in range(size - ws_pred - ws_future):
-            matr = np.zeros((ws_pred, ws_pred))
-            tmp = np.array(self.__pre_data[i:i+ws_pred])/np.linalg.norm(np.array(self.__pre_data[i:i+ws_pred]))
-            for ix, x in enumerate(tmp):
-                for iy, y in enumerate(tmp):
-                    matr[ix][iy] = x*y - math.sqrt(1-x*x)*math.sqrt(1-y*y)
+            matr = self.__matrix_compute(i, ws_pred)
             self.__all_data_x.append(matr)
-            """______________________________________________________________________________________________"""
-            fig = plt.figure()
-            ax = fig.add_subplot(1, 1, 1)
-            ax.set_aspect('equal')
-            plt.imshow(matr, interpolation='nearest', cmap=plt.cm.ocean)
-            plt.colorbar()
-            plt.show()
-            """______________________________________________________________________________________________"""
-            self.__all_data_y.append(self.__pre_data[i+ws_pred-1] - self.__pre_data[i+ws_pred+ws_future-1])
+            self.plt_show(matr)
+            self.__all_data_y.append(self.__trend_compute(i, ws_pred, ws_future))
         for i in zip(self.__all_data_x,self.__all_data_y):
             print(i)
+
+    def __matrix_compute(self, i, j):
+        matr = np.zeros((j, j))
+        tmp = np.array(self.__pre_data[i:i + j]) / np.linalg.norm(np.array(self.__pre_data[i:i + j]))
+        for ix, x in enumerate(tmp):
+            for iy, y in enumerate(tmp):
+                matr[ix][iy] = x * y - math.sqrt(1 - x * x) * math.sqrt(1 - y * y)
+        return matr
+
+    def __trend_compute(self, i, j, k):
+        return self.__pre_data[i+j-1] - self.__pre_data[i+j+k-1]
+
+    @staticmethod
+    def plt_show(matr):
+        fig = plt.figure()
+        ax = fig.add_subplot(1, 1, 1)
+        ax.set_aspect('equal')
+        plt.imshow(matr, interpolation='nearest', cmap=plt.cm.ocean)
+        plt.colorbar()
+        plt.show()
 
     def __process_train(self):
         pass
