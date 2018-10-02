@@ -27,6 +27,7 @@ class PreProcessor(implements(PreProcessorInterface)):
             self.__all_data_x.append(matr)
             self.__all_data_y.append(self.__trend_compute(i, ws_pred, ws_future))
 
+
     def __matrix_compute(self, i, j):
         matr = np.zeros((j, j))
         tmp = np.array(self.__pre_data[i:i + j]) / np.linalg.norm(np.array(self.__pre_data[i:i + j]))
@@ -36,7 +37,13 @@ class PreProcessor(implements(PreProcessorInterface)):
         return matr
 
     def __trend_compute(self, i, j, k):
-        return self.__pre_data[i+j-1] - self.__pre_data[i+j+k-1]
+        delta = self.__pre_data[i+j-1] - self.__pre_data[i+j+k-1]
+        if delta < -25:
+            return 1
+        elif -25 <= delta <= 15:
+            return 2
+        elif 15 < delta:
+            return 3
 
     @staticmethod
     def plt_show(matr):
