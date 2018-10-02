@@ -27,7 +27,6 @@ class PreProcessor(implements(PreProcessorInterface)):
             self.__all_data_x.append(matr)
             self.__all_data_y.append(self.__trend_compute(i, ws_pred, ws_future))
 
-
     def __matrix_compute(self, i, j):
         matr = np.zeros((j, j))
         tmp = np.array(self.__pre_data[i:i + j]) / np.linalg.norm(np.array(self.__pre_data[i:i + j]))
