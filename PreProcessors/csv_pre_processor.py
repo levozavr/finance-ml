@@ -26,8 +26,6 @@ class PreProcessor(implements(PreProcessorInterface)):
             matr = self.__matrix_compute(i, ws_pred)
             self.__all_data_x.append(matr)
             self.__all_data_y.append(self.__trend_compute(i, ws_pred, ws_future))
-        for i in zip(self.__all_data_x,self.__all_data_y):
-            print(i)
 
     def __matrix_compute(self, i, j):
         matr = np.zeros((j, j))
