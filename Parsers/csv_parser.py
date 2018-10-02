@@ -1,6 +1,7 @@
 from Parsers.interface import ParserInterface
 from interface import implements
 import csv
+import logging
 
 
 class CsvParser(implements(ParserInterface)):
@@ -11,9 +12,15 @@ class CsvParser(implements(ParserInterface)):
         self.__date = []
 
     def open(self):
-        self.file = open(self.filename, mode='r')
-        self.reader = csv.DictReader(self.file)
-        self.__read()
+        try:
+            self.file = open(self.filename, mode='r')
+            logging.info(f"open {self.filename} file")
+            self.reader = csv.DictReader(self.file)
+            self.__read()
+            logging.info(f"read all information from {self.filename}")
+        except Exception as e:
+            logging.fatal(e)
+            raise Exception(e)
 
     def __read(self):
         line_count = 0
@@ -33,4 +40,5 @@ class CsvParser(implements(ParserInterface)):
         if self.file:
             self.file.close()
         else:
-            raise Exception('No file')
+            logging.fatal("No file to close")
+            raise Exception('No file to close')
