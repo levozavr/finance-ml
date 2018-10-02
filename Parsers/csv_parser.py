@@ -4,7 +4,7 @@ import csv
 import logging
 
 
-class CsvParser(implements(ParserInterface)):
+class Parser(implements(ParserInterface)):
     def __init__(self, filename, **kwargs):
         self.filename = filename
         self.reader = None
