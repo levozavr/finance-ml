@@ -36,7 +36,13 @@ class PreProcessor(implements(PreProcessorInterface)):
         return matr
 
     def __trend_compute(self, i, j, k):
-        return self.__pre_data[i+j-1] - self.__pre_data[i+j+k-1]
+        delta = self.__pre_data[i+j-1] - self.__pre_data[i+j+k-1]
+        if delta < -40:
+            return 1
+        elif math.fabs(delta) <= 40:
+            return 2
+        elif 40 < delta:
+            return 3
 
     @staticmethod
     def plt_show(matr):
