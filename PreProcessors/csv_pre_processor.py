@@ -17,7 +17,6 @@ class PreProcessor(implements(PreProcessorInterface)):
         self.__test_data_x = None
         self.__test_data_y = None
         self.__all_data_x = []
-
         self.__all_data_y = []
 
     def start(self, ws_pred=20, ws_future=7):
@@ -60,10 +59,12 @@ class PreProcessor(implements(PreProcessorInterface)):
         pass
 
     def get_train(self):
+        self.__process_train()
         return self.__train_data_x, self.__train_data_y
 
     def get_test(self):
+        self.__process_test()
         return self.__test_data_x, self.__test_data_y
 
     def get_all_data(self):
-        pass
+        return self.__all_data_x, self.__all_data_y
