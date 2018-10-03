@@ -18,6 +18,8 @@ class PreProcessor(implements(PreProcessorInterface)):
         self.__test_data_y = None
         self.__all_data_x = []
         self.__all_data_y = []
+        self.__train_len = 0
+        self.__len = 0
 
     def start(self, ws_pred=20, ws_future=7):
         size = len(self.__pre_data)
@@ -25,6 +27,9 @@ class PreProcessor(implements(PreProcessorInterface)):
             matr = self.__matrix_compute(i, ws_pred)
             self.__all_data_x.append(matr)
             self.__all_data_y.append(self.__trend_compute(i, ws_pred, ws_future))
+        self.__len = int(len(self.__all_data_x) * 0.8)
+        self.__process_train()
+        self.__process_test()
 
     def __matrix_compute(self, i, j):
         matr = np.zeros((j, j))
@@ -53,17 +58,17 @@ class PreProcessor(implements(PreProcessorInterface)):
         plt.show()
 
     def __process_train(self):
-        pass
+        self.__train_data_x = np.array(self.__all_data_x[:self.__len])
+        self.__train_data_y = np.array(self.__all_data_y[:self.__len])
 
     def __process_test(self):
-        pass
+        self.__test_data_x = np.array(self.__all_data_x[self.__len:])
+        self.__test_data_y = np.array(self.__all_data_y[self.__len:])
 
     def get_train(self):
-        self.__process_train()
         return self.__train_data_x, self.__train_data_y
 
     def get_test(self):
-        self.__process_test()
         return self.__test_data_x, self.__test_data_y
 
     def get_all_data(self):
