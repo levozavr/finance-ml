@@ -29,6 +29,7 @@ class PreProcessor(implements(PreProcessorInterface)):
         for i in range(size - ws_pred - ws_future):
             matr = self.__matrix_compute(i, ws_pred)
             self.__all_data_x.append(matr)
+            self.__all_data_y.append(self.__trend_compute(i, ws_pred, ws_future))
         self.__len = int(len(self.__all_data_x) * 0.8)
         self.__process_train()
         self.__process_test()
