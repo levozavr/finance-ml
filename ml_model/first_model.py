@@ -1,13 +1,13 @@
 from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D
-from keras.layers import Activation, Dropout, Flatten, Dense
+from keras.layers import Dropout, Flatten, Dense
 from PreProcessors.csv_pre_processor import PreProcessor
 import matplotlib.pyplot as plt
 
 model = Sequential()
 model.add(Conv2D(70, kernel_size=(5, 5),
                  activation='relu',
-                 input_shape=(20,20,1)))
+                 input_shape=(20, 20, 1)))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.2))
 model.add(Conv2D(200, (5, 5), activation='relu'))
@@ -46,3 +46,8 @@ print("Точность работы на тестовых данных: %.2f%%"
 plt.plot(history.history['acc'])
 plt.plot(history.history['val_acc'])
 plt.show()
+
+
+#Коментраии к переменным
+#Работа с векторными данными
+#Модель для cfar10

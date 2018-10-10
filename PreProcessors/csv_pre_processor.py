@@ -63,13 +63,13 @@ class PreProcessor(implements(PreProcessorInterface)):
 
     def __process_train(self):
         self.__train_data_x = np.array(self.__all_data_x[:self.__len])\
-            .reshape(self.__len, self.__ws, self.__ws,1)
+            .reshape(self.__len, self.__ws, self.__ws, 1)
         self.__train_data_y = np.array(self.__all_data_y[:self.__len])
         self.__train_data_y = np_utils.to_categorical(self.__train_data_y, 3)
 
     def __process_test(self):
         self.__test_data_x = np.array(self.__all_data_x[self.__len:])\
-            .reshape(len(self.__all_data_x)-self.__len, self.__ws, self.__ws,1)
+            .reshape(len(self.__all_data_x)-self.__len, self.__ws, self.__ws, 1)
         self.__test_data_y = np.array(self.__all_data_y[self.__len:])
         self.__test_data_y = np_utils.to_categorical(self.__test_data_y, 3)
 
