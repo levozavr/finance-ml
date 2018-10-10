@@ -29,6 +29,7 @@ class PreProcessor(implements(PreProcessorInterface)):
         for i in range(size - ws_pred - ws_future):
             matr = self.__matrix_compute(i, ws_pred)
             self.__all_data_x.append(matr)
+            self.__all_data_y.append(self.__trend_compute(i, ws_pred, ws_future))
         self.__len = int(len(self.__all_data_x) * 0.8)
         self.__process_train()
         self.__process_test()
@@ -62,13 +63,13 @@ class PreProcessor(implements(PreProcessorInterface)):
 
     def __process_train(self):
         self.__train_data_x = np.array(self.__all_data_x[:self.__len])\
-            .reshape(self.__len, self.__ws, self.__ws,1)
+            .reshape(self.__len, self.__ws, self.__ws, 1)
         self.__train_data_y = np.array(self.__all_data_y[:self.__len])
         self.__train_data_y = np_utils.to_categorical(self.__train_data_y, 3)
 
     def __process_test(self):
         self.__test_data_x = np.array(self.__all_data_x[self.__len:])\
-            .reshape(len(self.__all_data_x)-self.__len, self.__ws, self.__ws,1)
+            .reshape(len(self.__all_data_x)-self.__len, self.__ws, self.__ws, 1)
         self.__test_data_y = np.array(self.__all_data_y[self.__len:])
         self.__test_data_y = np_utils.to_categorical(self.__test_data_y, 3)
 
