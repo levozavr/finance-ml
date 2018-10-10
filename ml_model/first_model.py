@@ -17,7 +17,6 @@ model.add(Flatten())
 model.add(Dense(500, activation='relu'))
 model.add(Dropout(0.5))
 model.add(Dense(3, activation='softmax'))
-
 model.compile(loss='binary_crossentropy',
               optimizer='rmsprop',
               metrics=['accuracy'])
@@ -25,10 +24,23 @@ model.compile(loss='binary_crossentropy',
 batch_size = 16
 PP = PreProcessor(filename="../index/avg_index.csv")
 PP.start()
+"""
+train_x: обучающие данные содержащие в себе heatmap 20X20
+train_y: обучающие данные(предсказания) содержащие в себе 7-дневные тренды
+"""
 train_x, train_y = PP.get_train()
+"""
+test_x: тренировачные данные содержащие в себе heatmap 20X20
+test_y: тренировачные данные(предсказания) содержащие в себе 7-дневные тренды
+"""
 test_x, test_y = PP.get_test()
+"""
+history: данные полученные во время обучения сети, необходимые для построения различных графиков
+"""
 history = model.fit(x=train_x, y=train_y, batch_size=2000, epochs=20, validation_split=0.2, verbose=2)
-
+"""
+Данные полученные после тестирования сети - точность работы на тренировчном множестве
+"""
 scores = model.evaluate(test_x, test_y, verbose=0)
 print("Точность работы на тестовых данных: %.2f%%" % (scores[1]*100))
 plt.plot(history.history['acc'])
