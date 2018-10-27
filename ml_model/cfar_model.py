@@ -20,10 +20,12 @@ PP.start()
 """
 train_x: обучающие данные содержащие в себе heatmap 20X20
 train_y: обучающие данные(предсказания) содержащие в себе 7-дневные тренды"""
+
 x_train, y_train = PP.get_train()
 """
 test_x: тренировачные данные содержащие в себе heatmap 20X20
 test_y: тренировачные данные(предсказания) содержащие в себе 7-дневные тренды"""
+
 x_test, y_test = PP.get_test()
 print('x_train shape:', x_train.shape)
 print(x_train.shape[0], 'train samples')
@@ -62,6 +64,7 @@ model.compile(loss='categorical_crossentropy',
 
 """
 history: данные полученные во время обучения сети, необходимые для построения различных графиков"""
+
 history = model.fit(x=x_train, y=y_train, batch_size=batch_size, epochs=epochs)
 if not os.path.isdir(save_dir):
     os.makedirs(save_dir)
@@ -71,6 +74,7 @@ print('Saved trained model at %s ' % model_path)
 
 """
 Данные полученные после тестирования сети - точность работы на тренировчном множестве """
+
 scores = model.evaluate(x_test, y_test, verbose=1)
 print("Точность работы на тестовых данных: %.2f%%" % (scores[1]*100))
 plt.plot(history.history['acc'])
