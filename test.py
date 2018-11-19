@@ -1,13 +1,13 @@
-from PreProcessors.csv_pre_processor_vector import PreProcessor
+from PreProcessors.csv_pre_processor_layer_heatmap import PreProcessor
 from Parsers.csv_parser_FX import Parser
 import logging
 logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s',
                     level=logging.DEBUG, filename='test.log')
 logging.info('program start')
-a = PreProcessor(filename="./index/avg_index.csv")
-a.start(grade=20)
+a = PreProcessor(["./index/FX_EURKRW.csv","./index/FX_JPYKRW.csv","./index/FX_CNYKRW.csv"])
+a.start(grade=0.9)
 x, y = a.get_all_data()
-print(x)
+
 a0, a1, a2 = 0, 0, 0
 for i in y:
     if i == 0:

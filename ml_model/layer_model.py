@@ -2,10 +2,9 @@ import keras
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
-from PreProcessors.csv_pre_processor_heatmap import PreProcessor
+from PreProcessors.csv_pre_processor_layer_heatmap import PreProcessor
 import matplotlib.pyplot as plt
 import os
-
 
 batch_size = 200
 num_classes = 3
@@ -15,8 +14,8 @@ num_predictions = 20
 save_dir = os.path.join(os.getcwd(), 'saved_models')
 model_name = 'keras_cifar10_trained_model.h5'
 
-PP = PreProcessor(filename="../index/avg_index.csv")
-PP.start(grade=20)
+PP = PreProcessor(["../index/FX_EURKRW.csv","../index/FX_JPYKRW.csv","../index/FX_CNYKRW.csv"])
+PP.start(grade=0.9)
 """
 train_x: обучающие данные содержащие в себе heatmap 20X20
 train_y: обучающие данные(предсказания) содержащие в себе 7-дневные тренды"""
@@ -31,10 +30,9 @@ print('x_train shape:', x_train.shape)
 print(x_train.shape[0], 'train samples')
 print(x_test.shape[0], 'test samples')
 
-
 model = Sequential()
 model.add(Conv2D(64, (5, 5), padding='same',
-                 input_shape=(20, 20, 1)))
+                 input_shape=(20, 20, 3)))
 model.add(Activation('relu'))
 model.add(Conv2D(32, (3, 3)))
 model.add(Activation('relu'))
@@ -49,9 +47,9 @@ model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.25))
 
 model.add(Flatten())
-model.add(Dense(512))
+model.add(Dense(1024))
 model.add(Activation('relu'))
-model.add(Dropout(0.5))
+model.add(Dropout(0.7))
 model.add(Dense(3, activation='softmax'))
 
 # initiate RMSprop optimizer
@@ -72,12 +70,11 @@ if __name__ == "__main__":
     model_path = os.path.join(save_dir, model_name)
     model.save(model_path)
     print('Saved trained model at %s ' % model_path)
-    
-    
+
+
     Данные полученные после тестирования сети - точность работы на тренировчном множестве """
 
     scores = model.evaluate(x_test, y_test, verbose=1)
-    print("Точность работы на тестовых данных: %.2f%%" % (scores[1]*100))
+    print("Точность работы на тестовых данных: %.2f%%" % (scores[1] * 100))
     plt.plot(history.history['acc'])
     plt.show()
-

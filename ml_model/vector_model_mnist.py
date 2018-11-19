@@ -29,19 +29,19 @@ out = Dense(3, activation='softmax')(hidden_2)
 
 model = Model(input=inp, output=out)
 
+if __name__ == "__main__":
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam',
+                  metrics=['accuracy'])
 
-model.compile(loss='categorical_crossentropy',
-              optimizer='adam',
-              metrics=['accuracy'])
+    history = model.fit(X_train, Y_train,
+              batch_size=batch_size, epochs=num_epochs,
+              verbose=1)
 
-history = model.fit(X_train, Y_train,
-          batch_size=batch_size, epochs=num_epochs,
-          verbose=1)
-
-scores = model.evaluate(X_test, Y_test, verbose=1)
+    scores = model.evaluate(X_test, Y_test, verbose=1)
 
 
-print("Точность работы на тестовых данных: %.2f%%" % (scores[1]*100))
-plt.plot(history.history['acc'])
-plt.show()
+    print("Точность работы на тестовых данных: %.2f%%" % (scores[1]*100))
+    plt.plot(history.history['acc'])
+    plt.show()
 
