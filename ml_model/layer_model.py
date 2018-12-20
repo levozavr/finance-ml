@@ -15,7 +15,7 @@ save_dir = os.path.join(os.getcwd(), 'saved_models')
 model_name = 'keras_cifar10_trained_model.h5'
 
 PP = PreProcessor(["../index/FX_EURKRW.csv","../index/FX_JPYKRW.csv","../index/FX_CNYKRW.csv"])
-PP.start(grade=0.9)
+PP.start(grade=8)
 """
 train_x: обучающие данные содержащие в себе heatmap 20X20
 train_y: обучающие данные(предсказания) содержащие в себе 7-дневные тренды"""
@@ -64,7 +64,8 @@ if __name__ == "__main__":
     """
     history: данные полученные во время обучения сети, необходимые для построения различных графиков"""
 
-    history = model.fit(x=x_train, y=y_train, batch_size=batch_size, epochs=epochs)
+    history = model.fit(x=x_train, y=y_train, batch_size=batch_size, epochs=epochs,
+                        shuffle=True,validation_data=(x_test, y_test))
     """if not os.path.isdir(save_dir):
         os.makedirs(save_dir)
     model_path = os.path.join(save_dir, model_name)

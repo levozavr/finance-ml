@@ -5,7 +5,7 @@ logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s',
                     level=logging.DEBUG, filename='test.log')
 logging.info('program start')
 a = PreProcessor(["./index/FX_EURKRW.csv","./index/FX_JPYKRW.csv","./index/FX_CNYKRW.csv"])
-a.start(grade=0.9)
+a.start(grade=8)
 x, y = a.get_all_data()
 
 a0, a1, a2 = 0, 0, 0

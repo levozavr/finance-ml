@@ -58,7 +58,7 @@ class PreProcessor(implements(PreProcessorInterface)):
                 ans.append(1)
             elif g < delta:
                 ans.append(2)
-        return ans[2]
+        return ans[1]
 
     @staticmethod
     def plt_show(matr):
