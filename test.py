@@ -6,7 +6,7 @@ logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s',
 logging.info('program start')
 a = PreProcessor("./index/FX_EURKRW.csv")
 a.start()
-q = a.delta
+q = [abs(i) for i in a.delta]
 z = sum(q)/len(q)
 v = 0
 for i in q:

@@ -24,7 +24,7 @@ class PreProcessor(implements(PreProcessorInterface)):
         self.__ws = 0
         self.delta = []
 
-    def start(self, ws_pred=25, ws_future=7, grade=1):
+    def start(self, ws_pred=20, ws_future=7, grade=1):
         self.__ws = ws_pred
         size = len(self.__pre_data)
         for i in range(size - ws_pred - ws_future):

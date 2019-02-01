@@ -5,7 +5,9 @@ from keras.layers import Conv2D, MaxPooling2D
 from PreProcessors.csv_pre_processor_inctiments import PreProcessor
 import matplotlib.pyplot as plt
 import os
-
+from keras.layers.normalization import BatchNormalization
+from keras.optimizers import SGD
+from keras.layers import Convolution2D
 
 batch_size = 200
 num_classes = 2
@@ -16,7 +18,7 @@ save_dir = os.path.join(os.getcwd(), 'saved_models')
 model_name = 'keras_cifar10_trained_model.h5'
 
 PP = PreProcessor(filename="../index/FX_EURKRW.csv")
-PP.start()
+PP.start(grade=20, ws_pred=20)
 """
 train_x: обучающие данные содержащие в себе heatmap 20X20
 train_y: обучающие данные(предсказания) содержащие в себе 7-дневные тренды"""
@@ -33,34 +35,29 @@ print(x_test.shape[0], 'test samples')
 
 
 model = Sequential()
-model.add(Conv2D(128, (5, 5), padding='same',
-                 input_shape=(25, 25, 1)))
+model.add(Convolution2D(32, 3, 3, border_mode='valid', input_shape=(20,20,1)))
 model.add(Activation('relu'))
-model.add(Conv2D(64, (5, 5)))
-model.add(Activation('relu'))
-model.add(MaxPooling2D(pool_size=(3, 3)))
-model.add(Dropout(0.75))
-
-model.add(Conv2D(64, (3, 3), padding='same'))
-model.add(Activation('relu'))
-model.add(Conv2D(64, (3, 3)))
+model.add(Convolution2D(64, 3, 3))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.75))
 
 model.add(Flatten())
-model.add(Dense(128))
+model.add(Dense(512))
 model.add(Activation('relu'))
-model.add(Dropout(0.75))
-model.add(Dense(2, activation='softmax'))
+
+model.add(Dense(2))
+model.add(Activation('softmax'))
+
+model.add(Dense(2))
+model.add(Activation("softmax"))
 
 # initiate RMSprop optimizer
 opt = keras.optimizers.rmsprop(lr=0.01, decay=1e-6)
-
+sgd = SGD(lr=0.001, decay=1e-6, momentum=0.9, nesterov=True)
 # Let's train the model using RMSprop
 if __name__ == "__main__":
-    model.compile(loss='categorical_crossentropy',
-                  optimizer=opt,
+    model.compile(loss='binary_crossentropy',
+                  optimizer='rmsprop',
                   metrics=['accuracy'])
 
     """
