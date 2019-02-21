@@ -22,7 +22,6 @@ PP.start(grade=20, ws_pred=20)
 """
 train_x: обучающие данные содержащие в себе heatmap 20X20
 train_y: обучающие данные(предсказания) содержащие в себе 7-дневные тренды"""
-
 x_train, y_train = PP.get_train()
 """
 test_x: тренировачные данные содержащие в себе heatmap 20X20
@@ -35,30 +34,32 @@ print(x_test.shape[0], 'test samples')
 
 
 model = Sequential()
-model.add(Convolution2D(32, 3, 3, border_mode='valid', input_shape=(20,20,1)))
-model.add(Activation('relu'))
-model.add(Convolution2D(64, 3, 3))
-model.add(Activation('relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-
+model.add(Conv2D(120, kernel_size=(3, 3),
+                 activation='relu',
+                 input_shape=(20, 20, 1)))
+model.add(MaxPooling2D(pool_size=(2, 2), padding='valid'))
+model.add(Conv2D(70, (3, 3), activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2), padding='valid'))
+model.add(Conv2D(50, (2, 2), activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2), padding='valid'))
+model.add(Conv2D(20, (2, 2), activation='relu'))
 model.add(Flatten())
-model.add(Dense(512))
-model.add(Activation('relu'))
-
-model.add(Dense(2))
+model.add(Dropout(0.5))
+model.add(Dense(100))
 model.add(Activation('softmax'))
+model.add(Dense(20))
+model.add(Activation('elu'))
+model.add(Dense(1))
+model.add(Activation("elu"))
 
-model.add(Dense(2))
-model.add(Activation("softmax"))
-
-# initiate RMSprop optimizer
+# initiate RMSprop optimizer[0.16458936]
 opt = keras.optimizers.rmsprop(lr=0.01, decay=1e-6)
 sgd = SGD(lr=0.001, decay=1e-6, momentum=0.9, nesterov=True)
 # Let's train the model using RMSprop
 if __name__ == "__main__":
-    model.compile(loss='binary_crossentropy',
+    model.compile(loss='mean_squared_error',
                   optimizer='rmsprop',
-                  metrics=['accuracy'])
+                  metrics=['binary_accuracy'])
 
     """
     history: данные полученные во время обучения сети, необходимые для построения различных графиков"""
@@ -77,12 +78,22 @@ if __name__ == "__main__":
     scores = model.evaluate(x_test, y_test, verbose=1)
     print("Точность работы на тестовых данных: %.2f%%" % (scores[1]*100))
     ans = model.predict(x_test, verbose=1)
+    print(ans)
     q = 0
     w = 0
     for a, b in zip(ans,y_test):
-        if a[1] > a[0] and b[1] == 1:
+        if a > 0.17 and b == 1:
             q+=1
-        if b[1] == 1:
+        if b == 1:
+            w+=1
+
+    print(q/w)
+    q = 0
+    w = 0
+    for a, b in zip(ans,y_test):
+        if a < 0.17 and b == 0:
+            q+=1
+        if b == 0:
             w+=1
 
     print(q/w)

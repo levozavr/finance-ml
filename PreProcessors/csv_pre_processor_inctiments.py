@@ -38,10 +38,15 @@ class PreProcessor(implements(PreProcessorInterface)):
     def __matrix_compute(self, i, j):
         matr = np.zeros((j, j))
         data = self.__pre_data[i:i + j]
-        tmp = np.array(data) / np.linalg.norm(np.array(data))
+        tmp = np.array(data) / max(self.__pre_data)
         for ix, x in enumerate(tmp):
             for iy, y in enumerate(tmp):
-                matr[ix][iy] = x * y - math.sqrt(1 - x * x) * math.sqrt(1 - y * y)
+                if ix > iy:
+                    matr[ix][iy] = x * y - y*y
+                elif ix < iy:
+                    matr[ix][iy] = x * y - x*x
+                else:
+                    matr[ix][iy] = 0
         return matr
 
     def __trend_compute(self, i, j, k, g=2):
@@ -57,7 +62,7 @@ class PreProcessor(implements(PreProcessorInterface)):
         fig = plt.figure()
         ax = fig.add_subplot(1, 1, 1)
         ax.set_aspect('equal')
-        plt.imshow(matr, interpolation='nearest', cmap=plt.cm.ocean)
+        plt.imshow(matr, cmap=plt.cm.ocean)
         plt.colorbar()
         plt.show()
 
@@ -65,13 +70,11 @@ class PreProcessor(implements(PreProcessorInterface)):
         self.__train_data_x = np.array(self.__all_data_x[:self.__len])\
             .reshape(self.__len, self.__ws, self.__ws, 1)
         self.__train_data_y = np.array(self.__all_data_y[:self.__len])
-        self.__train_data_y = np_utils.to_categorical(self.__train_data_y, 2)
 
     def __process_test(self):
         self.__test_data_x = np.array(self.__all_data_x[self.__len:])\
             .reshape(len(self.__all_data_x)-self.__len, self.__ws, self.__ws, 1)
         self.__test_data_y = np.array(self.__all_data_y[self.__len:])
-        self.__test_data_y = np_utils.to_categorical(self.__test_data_y, 2)
 
     def get_train(self):
         return self.__train_data_x, self.__train_data_y
