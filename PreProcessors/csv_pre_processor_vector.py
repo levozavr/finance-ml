@@ -7,7 +7,7 @@ from keras.utils import np_utils
 import math
 
 
-class PreProcessor(implements(PreProcessorInterface)):
+class PreProcessor(PreProcessorInterface):
     def __init__(self, filename):
         self.parser = Parser(filename)
         self.parser.open()

@@ -1,13 +1,12 @@
 from PreProcessors.interface import PreProcessorInterface
 from Parsers.csv_parser_FX import Parser
-from interface import implements
 import matplotlib.pyplot as plt
 import numpy as np
 from keras.utils import np_utils
 import math
 
 
-class PreProcessor(implements(PreProcessorInterface)):
+class PreProcessor(PreProcessorInterface):
     def __init__(self, filename):
         self.parser = Parser(filename)
         self.parser.open()

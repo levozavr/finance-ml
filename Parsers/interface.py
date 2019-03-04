@@ -1,10 +1,4 @@
-from interface import Interface
-
-
-class ParserInterface(Interface):
-    def __init__(self, filename, **kwargs):
-        pass
-
+class ParserInterface():
     def open(self):
         pass
 

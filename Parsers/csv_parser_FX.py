@@ -1,15 +1,16 @@
 from Parsers.interface import ParserInterface
-from interface import implements
 import csv
 import logging
+import datetime
 
 
-class Parser(implements(ParserInterface)):
+class Parser(ParserInterface):
     def __init__(self, filename, **kwargs):
         self.filename = filename
         self.reader = None
         self.file = None
         self.__date = []
+        self._dates = []
 
     def open(self):
         try:
@@ -28,13 +29,25 @@ class Parser(implements(ParserInterface)):
             if line_count == 0:
                 line_count = 1
             avg_row = row['money']
+            date = row['date']
             try:
                 self.__date.append(float(avg_row))
+                self._dates.append(datetime.datetime.strptime(date, '%Y-%m-%d'))
             except Exception as e:
                 print(e)
 
     def get_data(self):
         return self.__date
+
+    def get_indexes(self, date1, date2):
+        index1, index2 = 0, 0
+        for i, date in enumerate(self._dates):
+            if date >= date1 and index1 == 0:
+                index1 = (0, i)
+            if date >= date2:
+                index2 = (index1[1]+7, i)
+                break
+        return index1, index2
 
     def close(self):
         if self.file:

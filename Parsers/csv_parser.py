@@ -1,10 +1,9 @@
 from Parsers.interface import ParserInterface
-from interface import implements
 import csv
 import logging
 
 
-class Parser(implements(ParserInterface)):
+class Parser(ParserInterface):
     def __init__(self, filename, **kwargs):
         self.filename = filename
         self.reader = None

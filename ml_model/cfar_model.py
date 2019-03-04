@@ -26,6 +26,8 @@ test_x: тренировачные данные содержащие в себе
 test_y: тренировачные данные(предсказания) содержащие в себе 7-дневные тренды"""
 
 x_test, y_test = PP.get_test()
+
+x_val, y_val = PP.get_val()
 print('x_train shape:', x_train.shape)
 print(x_train.shape[0], 'train samples')
 print(x_test.shape[0], 'test samples')
@@ -64,7 +66,7 @@ if __name__ == "__main__":
     """
     history: данные полученные во время обучения сети, необходимые для построения различных графиков"""
 
-    history = model.fit(x=x_train, y=y_train, batch_size=batch_size, epochs=epochs)
+    history = model.fit(x=x_train, y=y_train, batch_size=batch_size, epochs=epochs, )
     """if not os.path.isdir(save_dir):
         os.makedirs(save_dir)
     model_path = os.path.join(save_dir, model_name)
