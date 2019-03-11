@@ -4,13 +4,17 @@ import matplotlib.pyplot as plt
 import numpy as np
 from keras.utils import np_utils
 import math
+import datetime
 
 
 class PreProcessor(PreProcessorInterface):
-    def __init__(self, filename):
+    def __init__(self, filename, date1=datetime.datetime(2015,9,4,0,0), date2=datetime.datetime(2016,1,29,0,0)):
         self.parser = Parser(filename)
         self.parser.open()
         self.__pre_data = self.parser.get_data()
+        i1, i2 = self.parser.get_indexes(date1, date2)
+        self.i1 = i1
+        self.i2 = i2
         self.parser.close()
         self.__train_data_x = None
         self.__train_data_y = None
@@ -29,8 +33,8 @@ class PreProcessor(PreProcessorInterface):
             matr = self.__matrix_compute(i, ws_pred)
             self.__all_data_x.append(matr)
             self.__all_data_y.append(self.__trend_compute(i, ws_pred, ws_future, grade))
-        self.__len = int(len(self.__all_data_x) * 0.8)
         self.__process_train()
+        self.__process_valid()
         self.__process_test()
 
     def __matrix_compute(self, i, j):
@@ -61,15 +65,23 @@ class PreProcessor(PreProcessorInterface):
         plt.show()
 
     def __process_train(self):
-        self.__train_data_x = np.array(self.__all_data_x[:self.__len])\
-            .reshape(self.__len, self.__ws, self.__ws, 1)
-        self.__train_data_y = np.array(self.__all_data_y[:self.__len])
+        self.__train_data_x = np.array(self.__all_data_x[self.i1[0]:self.i1[1]])\
+            .reshape(self.i1[1], self.__ws, self.__ws, 1)
+        self.__train_data_y = np.array(self.__all_data_y[self.i1[0]:self.i1[1]])
         self.__train_data_y = np_utils.to_categorical(self.__train_data_y, 3)
 
+    def __process_valid(self):
+        self.__val_data_x = np.array(self.__all_data_x[self.i2[0]:self.i2[1]]) \
+            .reshape(self.i2[1]-self.i2[0], self.__ws, self.__ws, 1)
+        print(self.__val_data_x.shape)
+        self.__val_data_y = self.__all_data_y[self.i2[0]:self.i2[1]]
+        self.__val_data_y = np_utils.to_categorical(self.__val_data_y, 3)
+        print(self.__val_data_y.shape)
+
     def __process_test(self):
-        self.__test_data_x = np.array(self.__all_data_x[self.__len:])\
-            .reshape(len(self.__all_data_x)-self.__len, self.__ws, self.__ws, 1)
-        self.__test_data_y = np.array(self.__all_data_y[self.__len:])
+        self.__test_data_x = np.array(self.__all_data_x[self.i2[1]+7:])\
+            .reshape(len(self.__all_data_x)-self.i2[1]-7, self.__ws, self.__ws, 1)
+        self.__test_data_y = np.array(self.__all_data_y[self.i2[1]+7:])
         self.__test_data_y = np_utils.to_categorical(self.__test_data_y, 3)
 
     def get_train(self):
@@ -77,6 +89,9 @@ class PreProcessor(PreProcessorInterface):
 
     def get_test(self):
         return self.__test_data_x, self.__test_data_y
+
+    def get_val(self):
+        return self.__val_data_x, self.__val_data_y
 
     def get_all_data(self):
         return self.__all_data_x, self.__all_data_y

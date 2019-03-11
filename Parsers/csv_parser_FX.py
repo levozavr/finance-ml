@@ -33,6 +33,7 @@ class Parser(ParserInterface):
             try:
                 self.__date.append(float(avg_row))
                 self._dates.append(datetime.datetime.strptime(date, '%Y-%m-%d'))
+                #self._dates.append(datetime.datetime.strptime(date, '%d.%m.%Y'))
             except Exception as e:
                 print(e)
 

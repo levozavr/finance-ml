@@ -2,7 +2,7 @@ import keras
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
-from PreProcessors.csv_pre_processor_assim_heatmap import PreProcessor
+from PreProcessors.csv_pre_processor_heatmap_FX import PreProcessor
 import matplotlib.pyplot as plt
 import os
 
@@ -14,7 +14,7 @@ num_predictions = 20
 save_dir = os.path.join(os.getcwd(), 'saved_models')
 model_name = 'keras_cifar10_trained_model.h5'
 
-PP = PreProcessor(filename="../index/FX_EURKRW.csv")
+PP = PreProcessor(filename="index/FX_EURKRW.csv")
 PP.start(grade=20)
 """
 train_x: обучающие данные содержащие в себе heatmap 20X20
@@ -55,7 +55,7 @@ model.add(Dropout(0.5))
 model.add(Dense(3, activation='softmax'))
 
 # initiate RMSprop optimizer
-opt = keras.optimizers.rmsprop(lr=0.0001, decay=1e-6)
+opt = keras.optimizers.rmsprop(lr=0.001, decay=1e-6)
 
 # Let's train the model using RMSprop
 if __name__ == "__main__":
@@ -66,7 +66,7 @@ if __name__ == "__main__":
     """
     history: данные полученные во время обучения сети, необходимые для построения различных графиков"""
 
-    history = model.fit(x=x_train, y=y_train, batch_size=batch_size, epochs=epochs, )
+    history = model.fit(x=x_train, y=y_train, batch_size=batch_size, epochs=epochs, validation_data=[x_val, y_val])
     """if not os.path.isdir(save_dir):
         os.makedirs(save_dir)
     model_path = os.path.join(save_dir, model_name)
