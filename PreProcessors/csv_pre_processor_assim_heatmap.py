@@ -51,8 +51,8 @@ class PreProcessor(PreProcessorInterface):
         return matr
 
     def scalar_multyplication(self, i,j,ix,iy, num=10):
-        x = np.array(self.__pre_data[i-num:i])-ix
-        y = np.array(self.__pre_data[j-num:j])-iy
+        x = np.array(self.__pre_data[i-num:i])/ix
+        y = np.array(self.__pre_data[j-num:j])/iy
 
         return np.array(x).dot(np.array(y))
 

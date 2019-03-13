@@ -8,7 +8,18 @@ logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s',
 logging.info('program start')
 a = PreProcessor("./index/FX_EURKRW.csv")
 a.start()
-print(a.get_train())
-print(a.get_val())
-print(a.get_test())
+a = PreProcessor("./index/FX_EURKRW.csv")
+a.start(grade=8)
+x, y = a.get_all_data()
+a0, a1, a2 = 0, 0, 0
+for i in y:
+    if i == 0:
+        a0 += 1
+    if i == 1:
+        a1 += 1
+    if i == 2:
+        a2 += 1
+print(a0, a1, a2)
+x, y = a.get_val()
+print(y)
 logging.info('program stopped')

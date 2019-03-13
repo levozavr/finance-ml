@@ -2,7 +2,7 @@ import keras
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
-from PreProcessors.csv_pre_processor_heatmap_FX import PreProcessor
+from PreProcessors.csv_pre_processor_assim_heatmap import PreProcessor
 import matplotlib.pyplot as plt
 import os
 
@@ -14,8 +14,8 @@ num_predictions = 20
 save_dir = os.path.join(os.getcwd(), 'saved_models')
 model_name = 'keras_cifar10_trained_model.h5'
 
-PP = PreProcessor(filename="index/FX_EURKRW.csv")
-PP.start(grade=20)
+PP = PreProcessor(filename="../index/FX_EURKRW.csv")
+PP.start(grade=8)
 """
 train_x: обучающие данные содержащие в себе heatmap 20X20
 train_y: обучающие данные(предсказания) содержащие в себе 7-дневные тренды"""
@@ -75,8 +75,9 @@ if __name__ == "__main__":
 
 
     Данные полученные после тестирования сети - точность работы на тренировчном множестве """
-
+    print(model.predict(x_val, 200))
     scores = model.evaluate(x_test, y_test, verbose=1)
     print("Точность работы на тестовых данных: %.2f%%" % (scores[1] * 100))
     plt.plot(history.history['acc'])
+    plt.plot(history.history['val_acc'])
     plt.show()

@@ -93,5 +93,12 @@ class PreProcessor(PreProcessorInterface):
     def get_val(self):
         return self.__val_data_x, self.__val_data_y
 
+    def get_val_data(self):
+        self.__val_data_x = np.array(self.__all_data_x[self.i2[0]:self.i2[1]]) \
+            .reshape(self.i2[1] - self.i2[0], self.__ws, self.__ws, 1)
+        print(self.__val_data_x.shape)
+        self.__val_data_y = self.__all_data_y[self.i2[0]:self.i2[1]]
+        return self.__val_data_x, self.__val_data_y
+
     def get_all_data(self):
         return self.__all_data_x, self.__all_data_y
