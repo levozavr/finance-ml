@@ -82,6 +82,6 @@ if __name__ == "__main__":
     print(model.predict(x_val, 200))
     scores = model.evaluate(x_test, y_test, verbose=1)
     print("Точность работы на тестовых данных: %.2f%%" % (scores[1] * 100))
-    plt.plot(np.array(history.history['acc'])+0.03)
-    plt.plot(np.array(history.history['val_acc'])-0.03)
+    plt.plot(np.array(history.history['acc']))
+    plt.plot(np.array(history.history['val_acc']))
     plt.show()
