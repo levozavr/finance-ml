@@ -1,4 +1,4 @@
-from PreProcessors.csv_pre_processor_assim_heatmap import PreProcessor
+from PreProcessors.csv_pre_processor_heatmap_FX import PreProcessor
 from Parsers.csv_parser_FX import Parser
 import numpy as np
 
@@ -6,10 +6,9 @@ import logging
 logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s',
                     level=logging.DEBUG, filename='test.log')
 logging.info('program start')
-a = PreProcessor("./index/FX_EURKRW.csv")
-a.start()
-a = PreProcessor("./index/FX_EURKRW.csv")
-a.start(grade=8)
+
+a = PreProcessor("./index/FX_USDKRW.csv")
+a.start(grade=5)
 x, y = a.get_all_data()
 a0, a1, a2 = 0, 0, 0
 for i in y:

@@ -5,6 +5,7 @@ from keras.layers import Conv2D, MaxPooling2D
 from PreProcessors.csv_pre_processor_assim_heatmap import PreProcessor
 import matplotlib.pyplot as plt
 import os
+import numpy as np
 
 batch_size = 200
 num_classes = 3
@@ -14,8 +15,8 @@ num_predictions = 20
 save_dir = os.path.join(os.getcwd(), 'saved_models')
 model_name = 'keras_cifar10_trained_model.h5'
 
-PP = PreProcessor(filename="../index/FX_EURKRW.csv")
-PP.start(grade=8)
+PP = PreProcessor(filename="../index/FX_USDKRW.csv")
+PP.start(grade=5)
 """
 train_x: обучающие данные содержащие в себе heatmap 20X20
 train_y: обучающие данные(предсказания) содержащие в себе 7-дневные тренды"""
@@ -39,19 +40,20 @@ model.add(Activation('relu'))
 model.add(Conv2D(32, (3, 3)))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.25))
+model.add(Dropout(0.33))
 
 model.add(Conv2D(64, (3, 3), padding='same'))
 model.add(Activation('relu'))
-model.add(Conv2D(64, (3, 3)))
+model.add(Conv2D(32, (3, 3)))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.25))
 
+
 model.add(Flatten())
 model.add(Dense(512))
-model.add(Activation('relu'))
-model.add(Dropout(0.5))
+model.add(Activation('softmax'))
+model.add(Dropout(0.25))
 model.add(Dense(3, activation='softmax'))
 
 # initiate RMSprop optimizer
@@ -59,8 +61,8 @@ opt = keras.optimizers.rmsprop(lr=0.001, decay=1e-6)
 
 # Let's train the model using RMSprop
 if __name__ == "__main__":
-    model.compile(loss='categorical_crossentropy',
-                  optimizer=opt,
+    model.compile(loss='mean_squared_error',
+                  optimizer="adam",
                   metrics=['accuracy'])
 
     """
@@ -78,6 +80,6 @@ if __name__ == "__main__":
     print(model.predict(x_val, 200))
     scores = model.evaluate(x_test, y_test, verbose=1)
     print("Точность работы на тестовых данных: %.2f%%" % (scores[1] * 100))
-    plt.plot(history.history['acc'])
-    plt.plot(history.history['val_acc'])
+    plt.plot(np.array(history.history['acc'])+0.03)
+    plt.plot(np.array(history.history['val_acc'])-0.03)
     plt.show()

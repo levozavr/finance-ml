@@ -33,6 +33,7 @@ class PreProcessor(PreProcessorInterface):
         size = len(self.__pre_data)
         for i in range(ws_pred, size - ws_pred - ws_future):
             matr = self.__matrix_compute(i, ws_pred)
+            #self.plt_show(matr)
             self.__all_data_x.append(matr)
             self.__all_data_y.append(self.__trend_compute(i, ws_pred, ws_future, grade))
         self.__len = int(len(self.__all_data_x) * 0.8)
@@ -48,12 +49,12 @@ class PreProcessor(PreProcessorInterface):
             for iy, y in enumerate(tmp):
                 matr[ix][iy] = self.scalar_multyplication(i+ix, i+iy, x, y)
         #self.plt_show(matr)
+        matr = matr / np.linalg.norm(matr)
         return matr
 
     def scalar_multyplication(self, i,j,ix,iy, num=10):
-        x = np.array(self.__pre_data[i-num:i])/ix
-        y = np.array(self.__pre_data[j-num:j])/iy
-
+        x = (np.array(self.__pre_data[i-num:i])-ix)
+        y = (np.array(self.__pre_data[j-num:j])-iy)
         return np.array(x).dot(np.array(y))
 
     def __trend_compute(self, i, j, k, g=20):
