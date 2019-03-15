@@ -18,7 +18,7 @@ save_dir = os.path.join(os.getcwd(), 'saved_models')
 model_name = 'keras_cifar10_trained_model.h5'
 
 PP = PreProcessor(filename="../index/FX_EURKRW.csv")
-PP.start(grade=20, ws_pred=20)
+PP.start(grade=8, ws_pred=20)
 """
 train_x: обучающие данные содержащие в себе heatmap 20X20
 train_y: обучающие данные(предсказания) содержащие в себе 7-дневные тренды"""
@@ -37,18 +37,27 @@ model = Sequential()
 model.add(Conv2D(120, kernel_size=(3, 3),
                  activation='relu',
                  input_shape=(20, 20, 1)))
-model.add(MaxPooling2D(pool_size=(2, 2), padding='valid'))
-model.add(Conv2D(70, (3, 3), activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2), padding='valid'))
-model.add(Conv2D(50, (2, 2), activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2), padding='valid'))
-model.add(Conv2D(20, (2, 2), activation='relu'))
+model.add(Activation('relu'))
+model.add(Conv2D(32, (3, 3)))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.75))
+
+model.add(Conv2D(64, (3, 3), padding='same'))
+model.add(Activation('relu'))
+model.add(Conv2D(32, (3, 3)))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.75))
+
+
 model.add(Flatten())
-model.add(Dropout(0.5))
-model.add(Dense(100))
+model.add(Dense(512))
 model.add(Activation('softmax'))
-model.add(Dense(20))
-model.add(Activation('elu'))
+model.add(Dense(64))
+model.add(Activation('softmax'))
+model.add(Dropout(0.75))
+
 model.add(Dense(1))
 model.add(Activation("elu"))
 

@@ -88,7 +88,6 @@ if __name__ == "__main__":
 
     """
     history: данные полученные во время обучения сети, необходимые для построения различных графиков"""
-
     history = model.fit(x=x_train, y=y_train, batch_size=batch_size, epochs=epochs, validation_data=[x_val, y_val])
     """if not os.path.isdir(save_dir):
         os.makedirs(save_dir)
