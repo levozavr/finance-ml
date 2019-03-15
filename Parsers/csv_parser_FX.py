@@ -40,6 +40,9 @@ class Parser(ParserInterface):
     def get_data(self):
         return self.__date
 
+    def get_dates(self):
+        return self._dates
+
     def get_indexes(self, date1, date2):
         index1, index2 = 0, 0
         for i, date in enumerate(self._dates):

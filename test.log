@@ -350,4 +350,39 @@ Epoch 20/20
 416/521 [======================>.......] - ETA: 0s
 512/521 [============================>.] - ETA: 0s
 521/521 [==============================] - 0s 553us/step
-Точность работы на тестовых данных: 37.04%
+Точность работы на тестовых данных: 37.04%2019-03-14 22:21:41,334 INFO: program start
+2019-03-14 22:21:41,335 INFO: open ./index/FX_USDKRW.csv file
+2019-03-14 22:21:41,463 INFO: read all information from ./index/FX_USDKRW.csv
+2019-03-14 22:21:44,247 INFO: program stopped
+2019-03-14 22:24:56,386 INFO: program start
+2019-03-14 22:24:56,386 INFO: open ./index/FX_USDKRW.csv file
+2019-03-14 22:24:56,452 INFO: read all information from ./index/FX_USDKRW.csv
+2019-03-14 22:24:58,886 INFO: program stopped
+2019-03-14 22:25:07,216 INFO: program start
+2019-03-14 22:25:07,217 INFO: open ./index/FX_USDKRW.csv file
+2019-03-14 22:25:07,280 INFO: read all information from ./index/FX_USDKRW.csv
+2019-03-14 22:25:09,616 INFO: program stopped
+2019-03-14 22:38:06,416 INFO: program start
+2019-03-14 22:38:06,416 INFO: open ./index/FX_USDKRW.csv file
+2019-03-14 22:38:06,480 INFO: read all information from ./index/FX_USDKRW.csv
+2019-03-14 22:38:08,646 INFO: program stopped
+2019-03-15 08:52:43,950 INFO: program start
+2019-03-15 08:52:43,950 INFO: open ./index/FX_USDKRW.csv file
+2019-03-15 08:52:44,014 INFO: read all information from ./index/FX_USDKRW.csv
+2019-03-15 08:53:04,603 INFO: program stopped
+2019-03-15 08:53:19,735 INFO: program start
+2019-03-15 08:53:19,735 INFO: open ./index/FX_USDKRW.csv file
+2019-03-15 08:53:19,798 INFO: read all information from ./index/FX_USDKRW.csv
+2019-03-15 08:53:41,155 INFO: program stopped
+2019-03-15 08:53:48,850 INFO: program start
+2019-03-15 08:53:48,850 INFO: open ./index/FX_USDKRW.csv file
+2019-03-15 08:53:48,912 INFO: read all information from ./index/FX_USDKRW.csv
+2019-03-15 08:54:09,817 INFO: program stopped
+2019-03-15 08:54:18,556 INFO: program start
+2019-03-15 08:54:18,556 INFO: open ./index/FX_USDKRW.csv file
+2019-03-15 08:54:18,617 INFO: read all information from ./index/FX_USDKRW.csv
+2019-03-15 08:54:39,545 INFO: program stopped
+2019-03-15 08:54:48,452 INFO: program start
+2019-03-15 08:54:48,452 INFO: open ./index/FX_USDKRW.csv file
+2019-03-15 08:54:48,513 INFO: read all information from ./index/FX_USDKRW.csv
+2019-03-15 08:55:08,847 INFO: program stopped

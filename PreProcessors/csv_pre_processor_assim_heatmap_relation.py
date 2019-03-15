@@ -28,7 +28,7 @@ class PreProcessor(PreProcessorInterface):
         self.__len = 0
         self.__ws = 0
 
-    def start(self, ws_pred=25, ws_future=7, grade=20):
+    def start(self, ws_pred=25, ws_future=7, grade=1.2):
         self.__ws = ws_pred
         size = len(self.__pre_data)
         for i in range(ws_pred, size - ws_pred - ws_future):
@@ -57,11 +57,11 @@ class PreProcessor(PreProcessorInterface):
         y = (np.array(self.__pre_data[j-num:j])-iy)
         return np.array(x).dot(np.array(y))
 
-    def __trend_compute(self, i, j, k, g=20):
-        delta = self.__pre_data[i+j-1] - self.__pre_data[i+j+k-1]
-        if delta < -g:
+    def __trend_compute(self, i, j, k, g=1.2):
+        delta = self.__pre_data[i+j+k-1] / self.__pre_data[i+j-1]
+        if delta < 1/g:
             return 0
-        elif -g <= delta <= g:
+        elif 1/g <= delta <= g:
             return 1
         elif g < delta:
             return 2
