@@ -29,6 +29,25 @@ test_y: тренировачные данные(предсказания) сод
 x_test, y_test = PP.get_test()
 
 x_val, y_val = PP.get_val()
+
+
+def distribution(y, st=""):
+    a0,b0,c0 =0,0,0
+    for a,b,c in y:
+        if a ==1:
+            a0+=1
+        if b == 1:
+            b0+=1
+        if c ==1:
+            c0+=1
+    print(st)
+    print(f"dec: {int(100*a0/len(y))}%, st: {int(100*b0/len(y))}%, inc: {int(100*c0/len(y))}%")
+
+
+distribution(y_train, "train:")
+distribution(y_val, "validation:")
+distribution(y_test, "test:")
+
 print('x_train shape:', x_train.shape)
 print(x_train.shape[0], 'train samples')
 print(x_test.shape[0], 'test samples')

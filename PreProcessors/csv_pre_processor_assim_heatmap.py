@@ -58,7 +58,7 @@ class PreProcessor(PreProcessorInterface):
         return np.array(x).dot(np.array(y))
 
     def __trend_compute(self, i, j, k, g=20):
-        delta = self.__pre_data[i+j-1] - self.__pre_data[i+j+k-1]
+        delta = self.__pre_data[i+j+k-1] - self.__pre_data[i+j-1]
         if delta < -g:
             return 0
         elif -g <= delta <= g:
