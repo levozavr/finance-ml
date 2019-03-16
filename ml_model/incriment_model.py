@@ -11,7 +11,7 @@ from keras.layers import Convolution2D
 
 batch_size = 200
 num_classes = 2
-epochs = 20
+epochs = 10
 data_augmentation = True
 num_predictions = 20
 save_dir = os.path.join(os.getcwd(), 'saved_models')
@@ -77,7 +77,7 @@ model.add(Activation('softmax'))
 model.add(Dropout(0.75))
 
 model.add(Dense(1))
-model.add(Activation("elu"))
+model.add(Activation("softmax"))
 
 # initiate RMSprop optimizer[0.16458936]
 opt = keras.optimizers.rmsprop(lr=0.01, decay=1e-6)
