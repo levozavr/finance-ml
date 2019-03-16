@@ -97,7 +97,16 @@ if __name__ == "__main__":
 
 
     Данные полученные после тестирования сети - точность работы на тренировчном множестве """
-    print(model.predict(x_val, 200))
+    res = model.predict(x_test, 200)
+    a0,a1,a2 = 0,0,0
+    for val in res:
+        if max(val) == val[0]:
+            a0+=1
+        if max(val) == val[1]:
+            a2+=1
+        if max(val) == val[2]:
+            a2+=1
+    print(f"dec: {a0}, st: {a1}, inc: {a2}")
     scores = model.evaluate(x_test, y_test, verbose=1)
     print("Точность работы на тестовых данных: %.2f%%" % (scores[1] * 100))
     plt.plot(np.array(history.history['acc']))

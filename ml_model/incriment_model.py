@@ -11,14 +11,14 @@ from keras.layers import Convolution2D
 
 batch_size = 200
 num_classes = 2
-epochs = 10
+epochs = 20
 data_augmentation = True
 num_predictions = 20
 save_dir = os.path.join(os.getcwd(), 'saved_models')
 model_name = 'keras_cifar10_trained_model.h5'
 
 PP = PreProcessor(filename="../index/FX_EURKRW.csv")
-PP.start(grade=8, ws_pred=20)
+PP.start(grade=1, ws_pred=20)
 """
 train_x: обучающие данные содержащие в себе heatmap 20X20
 train_y: обучающие данные(предсказания) содержащие в себе 7-дневные тренды"""
@@ -27,11 +27,29 @@ x_train, y_train = PP.get_train()
 test_x: тренировачные данные содержащие в себе heatmap 20X20
 test_y: тренировачные данные(предсказания) содержащие в себе 7-дневные тренды"""
 
+
+x_val, y_val = PP.get_val()
 x_test, y_test = PP.get_test()
 print('x_train shape:', x_train.shape)
 print(x_train.shape[0], 'train samples')
 print(x_test.shape[0], 'test samples')
 
+
+def distribution(y, st=""):
+    a0,b0 =0,0
+    for a in y:
+        if a>0.5:
+            b0+=1
+        else:
+            a0+=1
+
+    print(st)
+    print(f"dec: {int(100*a0/len(y))}%,  inc: {int(100*b0/len(y))}%")
+
+
+distribution(y_train, "train:")
+distribution(y_val, "validation:")
+distribution(y_test, "test:")
 
 model = Sequential()
 model.add(Conv2D(120, kernel_size=(3, 3),
@@ -83,11 +101,16 @@ if __name__ == "__main__":
     
     
     Данные полученные после тестирования сети - точность работы на тренировчном множестве """
-
+    res = model.predict(x_test, 200)
+    a0,a1 = 0,0
+    for val in res:
+        if val < 0.5:
+            a0+=1
+        else: a1 += 1
+    print(f"dec: {a0}, inc: {a1}")
     scores = model.evaluate(x_test, y_test, verbose=1)
     print("Точность работы на тестовых данных: %.2f%%" % (scores[1]*100))
-    ans = model.predict(x_test, verbose=1)
-    print(ans)
+    ans = model.predict(x_test, 200)
     q = 0
     w = 0
     for a, b in zip(ans,y_test):
@@ -96,7 +119,7 @@ if __name__ == "__main__":
         if b == 1:
             w+=1
 
-    print(q/w)
+
     q = 0
     w = 0
     for a, b in zip(ans,y_test):
@@ -105,7 +128,6 @@ if __name__ == "__main__":
         if b == 0:
             w+=1
 
-    print(q/w)
-    plt.plot(history.history['acc'])
+    plt.plot(history.history['binary_accuracy'])
     plt.show()
 
