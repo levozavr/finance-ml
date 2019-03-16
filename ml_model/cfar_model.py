@@ -68,12 +68,11 @@ model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.75))
 
-
 model.add(Flatten())
 model.add(Dense(512))
-model.add(Activation('softmax'))
+model.add(Activation('relu'))
 model.add(Dense(64))
-model.add(Activation('softmax'))
+model.add(Activation('relu'))
 model.add(Dropout(0.75))
 model.add(Dense(3, activation='softmax'))
 
@@ -82,7 +81,7 @@ opt = keras.optimizers.rmsprop(lr=0.001, decay=1e-6)
 
 # Let's train the model using RMSprop
 if __name__ == "__main__":
-    model.compile(loss='mean_squared_error',
+    model.compile(loss='categorical_crossentropy',
                   optimizer="adam",
                   metrics=['accuracy'])
 
