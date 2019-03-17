@@ -9,7 +9,7 @@ import numpy as np
 
 batch_size = 200
 num_classes = 2
-epochs = 1
+epochs = 20
 data_augmentation = True
 num_predictions = 20
 save_dir = os.path.join(os.getcwd(), 'saved_models')
@@ -50,27 +50,22 @@ print(x_train.shape[0], 'train samples')
 print(x_test.shape[0], 'test samples')
 
 model = Sequential()
-model.add(Conv2D(64, (5, 5), padding='same',
-                 input_shape=(20, 20, 1)))
-model.add(Activation('relu'))
-model.add(Conv2D(32, (3, 3)))
-model.add(Activation('relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.75))
-
-model.add(Conv2D(64, (3, 3), padding='same'))
-model.add(Activation('relu'))
-model.add(Conv2D(32, (3, 3)))
-model.add(Activation('relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.75))
-
+from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPool2D
+from keras.layers.normalization import BatchNormalization
+model.add(Conv2D(32, kernel_size=(3, 3),activation='relu',kernel_initializer='he_normal',input_shape=(20,20,1)))
+model.add(Conv2D(32, kernel_size=(3, 3),activation='relu',kernel_initializer='he_normal'))
+model.add(MaxPool2D((2, 2)))
+model.add(Dropout(0.20))
+model.add(Conv2D(64, (3, 3), activation='relu',padding='same',kernel_initializer='he_normal'))
+model.add(Conv2D(64, (3, 3), activation='relu',padding='same',kernel_initializer='he_normal'))
+model.add(MaxPool2D(pool_size=(2, 2)))
+model.add(Dropout(0.25))
+model.add(Conv2D(128, (3, 3), activation='relu',padding='same',kernel_initializer='he_normal'))
+model.add(Dropout(0.25))
 model.add(Flatten())
-model.add(Dense(512))
-model.add(Activation('relu'))
-model.add(Dense(64))
-model.add(Activation('relu'))
-model.add(Dropout(0.75))
+model.add(Dense(128, activation='relu'))
+model.add(BatchNormalization())
+model.add(Dropout(0.25))
 model.add(Dense(num_classes, activation='softmax'))
 
 # initiate RMSprop optimizer

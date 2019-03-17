@@ -8,7 +8,8 @@ import datetime
 
 
 class PreProcessor(PreProcessorInterface):
-    def __init__(self, filename, date1=datetime.datetime(2015,9,4,0,0), date2=datetime.datetime(2016,1,29,0,0)):
+    def __init__(self, filename, classes=3, date1=datetime.datetime(2015,9,4,0,0), date2=datetime.datetime(2016,1,29,0,0)):
+        self.classes=classes
         self.parser = Parser(filename)
         self.parser.open()
         self.__pre_data = self.parser.get_data()
@@ -48,12 +49,19 @@ class PreProcessor(PreProcessorInterface):
 
     def __trend_compute(self, i, j, k, g=20):
         delta =  self.__pre_data[i+j+k-1] - self.__pre_data[i+j-1]
-        if delta < -g:
-            return 0
-        elif -g <= delta <= g:
-            return 1
-        elif g < delta:
-            return 2
+        if self.classes ==3 :
+            if delta < -g:
+                return 0
+            elif -g <= delta <= g:
+                return 1
+            elif g < delta:
+                return 2
+        elif self.classes == 2:
+            if delta <= g:
+                return 0
+            elif g < delta:
+                return 1
+
 
     @staticmethod
     def plt_show(matr):
@@ -68,21 +76,21 @@ class PreProcessor(PreProcessorInterface):
         self.__train_data_x = np.array(self.__all_data_x[self.i1[0]:self.i1[1]])\
             .reshape(self.i1[1], self.__ws, self.__ws, 1)
         self.__train_data_y = np.array(self.__all_data_y[self.i1[0]:self.i1[1]])
-        self.__train_data_y = np_utils.to_categorical(self.__train_data_y, 3)
+        self.__train_data_y = np_utils.to_categorical(self.__train_data_y, self.classes)
 
     def __process_valid(self):
         self.__val_data_x = np.array(self.__all_data_x[self.i2[0]:self.i2[1]]) \
             .reshape(self.i2[1]-self.i2[0], self.__ws, self.__ws, 1)
         print(self.__val_data_x.shape)
         self.__val_data_y = self.__all_data_y[self.i2[0]:self.i2[1]]
-        self.__val_data_y = np_utils.to_categorical(self.__val_data_y, 3)
+        self.__val_data_y = np_utils.to_categorical(self.__val_data_y, self.classes)
         print(self.__val_data_y.shape)
 
     def __process_test(self):
         self.__test_data_x = np.array(self.__all_data_x[self.i2[1]+7:])\
             .reshape(len(self.__all_data_x)-self.i2[1]-7, self.__ws, self.__ws, 1)
         self.__test_data_y = np.array(self.__all_data_y[self.i2[1]+7:])
-        self.__test_data_y = np_utils.to_categorical(self.__test_data_y, 3)
+        self.__test_data_y = np_utils.to_categorical(self.__test_data_y, self.classes)
 
     def get_train(self):
         return self.__train_data_x, self.__train_data_y
@@ -91,13 +99,6 @@ class PreProcessor(PreProcessorInterface):
         return self.__test_data_x, self.__test_data_y
 
     def get_val(self):
-        return self.__val_data_x, self.__val_data_y
-
-    def get_val_data(self):
-        self.__val_data_x = np.array(self.__all_data_x[self.i2[0]:self.i2[1]]) \
-            .reshape(self.i2[1] - self.i2[0], self.__ws, self.__ws, 1)
-        print(self.__val_data_x.shape)
-        self.__val_data_y = self.__all_data_y[self.i2[0]:self.i2[1]]
         return self.__val_data_x, self.__val_data_y
 
     def get_all_data(self):
