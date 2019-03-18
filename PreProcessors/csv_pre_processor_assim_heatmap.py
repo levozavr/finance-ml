@@ -8,7 +8,7 @@ import math
 
 
 class PreProcessor(PreProcessorInterface):
-    def __init__(self, filename,classes=3, date1=datetime.datetime(2015,9,4,0,0), date2=datetime.datetime(2018,1,1,0,0)):
+    def __init__(self, filename,classes=3, date1=datetime.datetime(2015,9,4,0,0), date2=datetime.datetime(2017,1,1,0,0)):
         self.classes = classes
         self.parser = Parser(filename)
         self.parser.open()
@@ -53,7 +53,7 @@ class PreProcessor(PreProcessorInterface):
         matr = matr / np.linalg.norm(matr)
         return matr
 
-    def scalar_multyplication(self, i,j,ix,iy, num=10):
+    def scalar_multyplication(self, i,j,ix,iy, num=3):
         x = (np.array(self.__pre_data[i-num:i])-ix)
         y = (np.array(self.__pre_data[j-num:j])-iy)
         return np.array(x).dot(np.array(y))

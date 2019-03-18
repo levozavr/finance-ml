@@ -7,8 +7,8 @@ import matplotlib.pyplot as plt
 import os
 import numpy as np
 
-batch_size = 200
-num_classes = 2
+batch_size = 300
+num_classes = 3
 epochs = 20
 data_augmentation = True
 num_predictions = 20
@@ -16,7 +16,7 @@ save_dir = os.path.join(os.getcwd(), 'saved_models')
 model_name = 'keras_cifar10_trained_model.h5'
 
 PP = PreProcessor(filename="../index/FX_USDKRW.csv", classes=num_classes)
-PP.start(grade=4)
+PP.start(grade=0.8)
 """
 train_x: обучающие данные содержащие в себе heatmap 20X20
 train_y: обучающие данные(предсказания) содержащие в себе 7-дневные тренды"""
@@ -32,7 +32,7 @@ x_val, y_val = PP.get_val()
 
 
 def distribution(y, st=""):
-    rez = y[0]
+    rez = np.zeros(y[0].shape)
     for val in y:
         for i, c in enumerate(val):
             if c==1:
@@ -67,7 +67,7 @@ model.add(Dense(128, activation='relu'))
 model.add(BatchNormalization())
 model.add(Dropout(0.25))
 model.add(Dense(num_classes, activation='softmax'))
-
+model.summary()
 # initiate RMSprop optimizer
 opt = keras.optimizers.rmsprop(lr=0.001, decay=1e-6)
 
@@ -88,7 +88,7 @@ if __name__ == "__main__":
 
 
     Данные полученные после тестирования сети - точность работы на тренировчном множестве """
-    res = model.predict(x_test, 200)
+    res = model.predict(x_test, 300)
     rez = np.zeros(res[0].shape)
     for val in res:
         for i, c in enumerate(val):

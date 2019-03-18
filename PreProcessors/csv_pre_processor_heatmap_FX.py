@@ -8,7 +8,7 @@ import datetime
 
 
 class PreProcessor(PreProcessorInterface):
-    def __init__(self, filename, classes=3, date1=datetime.datetime(2015,9,4,0,0), date2=datetime.datetime(2016,1,29,0,0)):
+    def __init__(self, filename, classes=3, date1=datetime.datetime(2015,9,4,0,0), date2=datetime.datetime(2017,1,1,0,0)):
         self.classes=classes
         self.parser = Parser(filename)
         self.parser.open()
