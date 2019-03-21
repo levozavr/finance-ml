@@ -2,13 +2,13 @@ import keras
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
-from PreProcessors.csv_pre_processor_heatmap_FX import PreProcessor
+from PreProcessors.csv_pre_processor_assim_heatmap import PreProcessor
 import matplotlib.pyplot as plt
 import os
 import numpy as np
 
 batch_size = 300
-num_classes = 3
+num_classes = 2
 epochs = 20
 data_augmentation = True
 num_predictions = 20
@@ -16,7 +16,7 @@ save_dir = os.path.join(os.getcwd(), 'saved_models')
 model_name = 'keras_cifar10_trained_model.h5'
 
 PP = PreProcessor(filename="../index/FX_USDKRW.csv", classes=num_classes)
-PP.start(grade=5)
+PP.start(grade=0.8)
 """
 train_x: обучающие данные содержащие в себе heatmap 20X20
 train_y: обучающие данные(предсказания) содержащие в себе 7-дневные тренды"""
