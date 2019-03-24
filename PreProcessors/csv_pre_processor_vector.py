@@ -77,3 +77,4 @@ class PreProcessor(PreProcessorInterface):
 
     def get_all_data(self):
         return self.__all_data_x, self.__all_data_y
+
