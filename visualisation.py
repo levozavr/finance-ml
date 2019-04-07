@@ -11,11 +11,16 @@ def f(delta):
     elif g < delta:
         return 2
 
-a = Parser("./index/FX_EURKRW.csv", )
+a = Parser("./index/FX_USDKRW.csv", )
 a.open()
 q = a.get_data()
 x = []
-plt.plot(a.get_dates(), q)
-plt.plot([datetime.datetime(2015,9,4,0,0),datetime.datetime(2015,9,4,0,0)],[1100,2000])
-plt.plot([datetime.datetime(2017,1,1,0,0),datetime.datetime(2017,1,1,0,0)],[1100,2000])
+fig, ax = plt.subplots()
+ax.set_xlabel('Временные отчеты')
+ax.set_ylabel('Значение индекса')
+ax.plot(q, label="index2")
+ax.plot([2835,2835],[800,1600])
+ax.plot([3163,3163],[800,1600])
+ax.legend(loc='upper left')
 plt.show()
+
