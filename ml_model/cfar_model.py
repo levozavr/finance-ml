@@ -15,7 +15,7 @@ num_predictions = 20
 save_dir = os.path.join(os.getcwd(), 'saved_models')
 model_name = 'keras_cifar10_trained_model.h5'
 
-PP = PreProcessor(filename="../index/FX_USDKRW.csv", classes=num_classes)
+PP = PreProcessor(filename="../index/FX_EURKRW.csv", classes=num_classes)
 PP.start(grade=0.8)
 """
 train_x: обучающие данные содержащие в себе heatmap 20X20
@@ -105,8 +105,14 @@ if __name__ == "__main__":
     print(rez / len(res) * 100)
     scores = model.evaluate(x_test, y_test, verbose=1)
     print("Точность работы на тестовых данных: %.2f%%" % (scores[1] * 100))
-    plt.plot(np.array(history.history['acc']))
-    plt.plot(np.array(history.history['val_acc']))
+
+    fig, ax = plt.subplots()
+    ax.set_xlabel('Количество эпох')
+    ax.set_ylabel('Accuracy')
+
+    ax.plot(np.array(history.history['acc']), label="Train set")
+    ax.plot(np.array(history.history['val_acc']), label="Validation set")
+    ax.legend(loc='upper left')
     plt.show()
 
 """ переписать для классификации на классов"""
